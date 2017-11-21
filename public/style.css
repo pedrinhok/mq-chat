@@ -1,0 +1,56 @@
+* {
+  margin: 0;
+  padding: 0;
+}
+
+body {
+  font-family: Verdana;
+  font-size: 15px;
+}
+
+form {
+  position: fixed;
+  bottom: 0;
+  width: 100vw;
+  display: flex;
+}
+
+form input {
+  width: 90vw;
+  padding: 25px;
+  font-size: 15px;
+  border: 0;
+  background: #E2E2E2;
+}
+form input:focus {
+  outline: none;
+}
+
+form button {
+  width: 10vw;
+  border: 0;
+  border-radius: 0;
+  cursor: pointer;
+  font-size: 15px;
+  color: #FFF;
+  background: #0088CC;
+  opacity: 0.8;
+}
+form button:hover {
+  opacity: 1;
+}
+
+#messages {
+  width: 100vw;
+  display: flex;
+  flex-direction: column;
+}
+
+#messages div {
+  width: 100vw;
+  padding: 5px 10px;
+}
+
+#messages div:nth-child(odd) {
+  background: #E2E2E2;
+}

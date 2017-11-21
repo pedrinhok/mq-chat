@@ -1,0 +1,76 @@
+<!doctype html>
+<html>
+<head>
+  <link rel="stylesheet" href="style.css">
+  <title>mq-chat</title>
+</head>
+<body onload="initialize();">
+  <div id="messages"></div>
+  <form action="javascript:void(0);">
+    <input id="message" autocomplete="off" placeholder="Message" />
+    <button onclick="submitRequest()">SEND</button>
+  </form>
+  <script type="text/javascript">
+
+    function initialize() {
+      refresh(1000)
+    }
+
+    function refresh(time) {
+      const input = document.querySelector("#message")
+      input.focus()
+      setTimeout(() => {
+        messages()
+      }, time)
+    }
+
+    async function messages() {
+      try {
+        const request = new Request("messages")
+        const response = await fetch(request)
+        if (response.status == 200) {
+          const messages = await response.json()
+          for (var index in messages) {
+            const message = messages[index]
+            printMessage(message)
+          }
+          return refresh(5)
+        }
+      }
+      catch (err) {
+        console.log(err.message)
+      }
+      refresh(1000)
+    }
+
+    function printMessage(message) {
+      const messages = document.querySelector("#messages")
+      const div = document.createElement("div")
+      div.textContent = message.data
+      messages.appendChild(div)
+    }
+
+    async function submitRequest() {
+      const input = document.querySelector("#message")
+      const message = input.value
+      try {
+        const request = new Request("messages", {
+          method: "POST",
+          headers: new Headers({
+            "Content-Type": "application/json"
+          }),
+          body: JSON.stringify({
+            message: message
+          })
+        })
+        const response = await fetch(request)
+        input.value = ""
+      }
+      catch (err) {
+        console.log(err.message)
+      }
+    }
+
+  </script>
+</body>
+</html>
