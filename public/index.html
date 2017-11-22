@@ -30,10 +30,7 @@
         const response = await fetch(request)
         if (response.status == 200) {
           const messages = await response.json()
-          for (var index in messages) {
-            const message = messages[index]
-            printMessage(message)
-          }
+          messages.map((message) => printMessage(message))
           return refresh(5)
         }
       }
@@ -43,10 +40,17 @@
       refresh(1000)
     }
 
-    function printMessage(message) {
-      const messages = document.querySelector("#messages")
+    function printMessage(data) {
+      const client = document.createElement("div")
+      client.className = "client"
+      client.textContent = data.client
+      const message = document.createElement("div")
+      message.className = "message"
+      message.textContent = data.message
       const div = document.createElement("div")
-      div.textContent = message.data
+      div.appendChild(client)
+      div.appendChild(message)
+      const messages = document.querySelector("#messages")
       messages.appendChild(div)
     }
 

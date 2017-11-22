@@ -6,6 +6,7 @@
 body {
   font-family: Verdana;
   font-size: 15px;
+  color: #333;
 }
 
 form {
@@ -22,6 +23,7 @@ form input {
   border: 0;
   background: #E2E2E2;
 }
+
 form input:focus {
   outline: none;
 }
@@ -36,6 +38,7 @@ form button {
   background: #0088CC;
   opacity: 0.8;
 }
+
 form button:hover {
   opacity: 1;
 }
@@ -46,11 +49,21 @@ form button:hover {
   flex-direction: column;
 }
 
-#messages div {
+#messages > div {
   width: 100vw;
-  padding: 5px 10px;
+  padding: 15px;
+  display: flex;
 }
 
-#messages div:nth-child(odd) {
+#messages > div:nth-child(odd) {
   background: #E2E2E2;
+}
+
+.client {
+  flex: 1 1 10%;
+  color: #888;
+}
+
+.message {
+  flex: 1 1 90%;
 }

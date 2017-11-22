@@ -8,7 +8,7 @@ const CREDENTIALS = {
   id: "CLIENT_" + uuid.v4().substring(0, 7),
   service: "amqp://vmeberlitz.southcentralus.cloudapp.azure.com:5672",
 }
-const client = mqlight.createClient(CREDENTIALS, err => {
+const client = mqlight.createClient(CREDENTIALS, (err) => {
   if (err) {
     console.log("Connection error on service " + CREDENTIALS.service)
   } else {
@@ -17,11 +17,11 @@ const client = mqlight.createClient(CREDENTIALS, err => {
   client.subscribe(TOPIC)
   client.on("message", processMessage)
 })
-client.on("error", err => console.log(err))
+client.on("error", (err) => console.log(err))
 
 const messages = []
 function processMessage(data, delivery) {
-  messages.push({ data, delivery })
+  messages.push(data)
 }
 
 const PORT = process.env.PORT || 8080
@@ -31,26 +31,24 @@ server.use(bodyParser.json())
 
 server.get("/messages", (req, res) => {
   if (messages.length === 0) {
-    return res.send(204)
+    return res.sendStatus(204)
   }
   const data = []
   while (messages.length > 0) {
-    const message = messages.shift()
-    data.push(message.data)
+    data.push(messages.shift())
   }
   res.json(data)
 })
 
 server.post("/messages", (req, res) => {
   if (!req.body.message) {
-    return res.send(500)
+    return res.sendStatus(500)
   }
-  const message = {
-    data: req.body.message,
+  client.send(TOPIC, {
+    message: req.body.message,
     client: client.id
-  }
-  client.send(TOPIC, message)
-  return res.send(200)
+  })
+  return res.sendStatus(200)
 })
 
 server.listen(PORT, () => console.log("running on port " + PORT))
